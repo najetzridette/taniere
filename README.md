@@ -1,95 +1,90 @@
-# JobBoard — Epitech
+<p align="center">
+  <img src="banner-taniere.png" alt="tanière — un job board qui protège les candidats" width="100%">
+</p>
 
-Job board **React + FastAPI + SQLAlchemy + MySQL**, tout en local.
-Sujet : `sujets/jobBoard-project.pdf` (guide : `sujets/jobBoard-bootstrap.pdf`).
+<p align="center">
+  <img src="https://img.shields.io/badge/React-7A2E3A?style=for-the-badge&logo=react&logoColor=white" alt="React">
+  <img src="https://img.shields.io/badge/Vite-7A2E3A?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
+  <img src="https://img.shields.io/badge/FastAPI-151515?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/SQLAlchemy-151515?style=for-the-badge&logo=sqlalchemy&logoColor=white" alt="SQLAlchemy">
+  <img src="https://img.shields.io/badge/MySQL-151515?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/Figma-5A5852?style=for-the-badge&logo=figma&logoColor=white" alt="Figma">
+</p>
 
-Le backend est la source de vérité du contrat d'API : sa documentation détaillée
-(routes, schéma, configuration) est dans [`backend/README.md`](backend/README.md)
-et dans Swagger (<http://127.0.0.1:8000/docs>).
+> Projet pédagogique Epitech réalisé **en 2 semaines, en équipe de 3**, pendant la piscine.
+> 🏆 **Trophée de la meilleure présentation — Job Board 2026.**
+> Les comptes et les annonces préchargés sont fictifs : ce sont des données de démonstration.
 
-## Lancer en local
+## Le projet
 
-Prérequis : **Python 3.12+**, **Node.js 22.12+**, **MySQL 8** en local.
-Guide pas à pas : [`docs/setup-local.md`](docs/setup-local.md).
+**tanière** est un site d'offres d'emploi de tous types (CDI, CDD, stage, alternance…), pas uniquement destiné aux étudiants.
+Notre priorité : **protéger les candidats contre les fausses annonces**.
 
-### 1. Base de données
+Le nom vient de nos trois initiales (**T**eikinui, **A**ntonin, **N**ajet) : la tanière, c'est le refuge, l'endroit où l'on se sent chez soi.
+D'où notre phrase d'accroche : *« Trouvez un poste où vous vous sentez chez vous. »*
+
+## L'application en images
+
+| | |
+| :---: | :---: |
+| <img src="taniere-accueil.jpg" alt="Page d'accueil" width="100%"> | <img src="taniere-mobile.jpg" alt="Version mobile" width="100%"> |
+| **Accueil** · recherche par mot-clé, lieu et contrat | **Mobile** · liste des offres et candidature |
+| <img src="taniere-admin.jpg" alt="Espace administrateur" width="100%"> | <img src="taniere-api.jpg" alt="Architecture de l'API" width="100%"> |
+| **Espace administrateur** · gestion des annonces | **API REST** · les routes du serveur |
+
+## Fonctionnalités
+
+- **Recherche d'offres** par mot-clé, lieu et type de contrat, avec pagination
+- **Candidature** en quelques clics, avec ou sans compte
+- **Compte candidat** : inscription, connexion, coordonnées modifiables
+- **Espace administrateur** : gestion des annonces, des entreprises, des utilisateurs et des candidatures
+- **Sécurité** : mots de passe chiffrés (bcrypt), authentification par jeton (JWT), limitation du nombre de tentatives de connexion
+
+## L'équipe
+
+| | Rôle |
+| --- | --- |
+| **Najet Zridette** | Direction artistique et web design : maquette Figma, identité visuelle, CSS |
+| **Antonin Chevolleau** | Développement |
+| **Teikinui Decian** | Développement |
+
+## Stack technique
+
+| Partie | Technologies |
+| --- | --- |
+| Interface | React 19, React Router 7, Vite 8 |
+| Serveur | FastAPI, SQLAlchemy 2, PyJWT, bcrypt |
+| Base de données | MySQL 8 |
+| Design | Figma |
+
+## Lancer le projet en local
+
+Prérequis : Python 3.12+, Node.js 22.12+, MySQL 8.
 
 ```bash
+# 1. Base de données
 mysql -u <user> -p -e "CREATE DATABASE job_board CHARACTER SET utf8mb4;"
-mysql -u <user> -p job_board < backend/sql/schemas.sql   # ATTENTION : supprime et recrée les tables
-mysql -u <user> -p job_board < backend/sql/seed.sql      # données de démonstration
-```
+mysql -u <user> -p job_board < backend/sql/schemas.sql
+mysql -u <user> -p job_board < backend/sql/seed.sql
 
-Comptes du seed (mot de passe `admin1234`) : `admin` (admin), `recruiter`, `jdoe` (user).
-
-### 2. Backend
-
-```bash
+# 2. Serveur (terminal 1)
 cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements-dev.txt
-cp .env.example .env   # renseigner DATABASE_URL et SECRET_KEY
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env    # renseigner DATABASE_URL et SECRET_KEY
 python -m uvicorn app.main:app --reload --port 8000
-```
 
-- API : <http://127.0.0.1:8000/api>
-- Swagger : <http://127.0.0.1:8000/docs>
-- Santé : <http://127.0.0.1:8000/health>
-
-### 3. Frontend
-
-```bash
+# 3. Interface (terminal 2)
 cd frontend
 npm install
-cp .env.example .env   # seulement si vous n'avez pas déjà de .env
-npm run dev
+npm run dev             # puis ouvrir http://localhost:5173
 ```
 
-Ouvrir l'URL affichée par Vite (port 5173). `VITE_API_URL` pointe vers le backend
-**sans** suffixe `/api` (défaut `http://127.0.0.1:8000`) ; le front ajoute `/api`.
-L'origine du front doit figurer dans `CORS_ORIGINS` (`backend/.env`).
+Comptes de démonstration (mot de passe `admin1234`) : `admin`, `recruiter`, `jdoe`.
 
-## Pages
+---
 
-| URL | Fonction |
-| --- | --- |
-| `/`, `/Annonces` | Liste paginée, recherche (mot-clé, lieu, contrat) faite par l'API, détails à la demande, candidature |
-| `/CreateAccount` | Inscription puis connexion automatique |
-| `/Login` | Connexion (nom d'utilisateur ou email) ; admin → `/Admin`, sinon `/Annonces` |
-| `/Account` | Coordonnées modifiables, connexion requise |
-| `/Admin` | CRUD paginé des annonces, entreprises, utilisateurs et candidatures (admin) |
-
-## API en bref
-
-Toutes les routes sont sous `/api`. Détail complet : [`backend/README.md`](backend/README.md).
-
-- **Auth** : JWT Bearer (60 min par défaut), mots de passe bcrypt. `POST /auth/login`
-  attend un formulaire (`username`, `password`). Pas de route de déconnexion : le front
-  supprime le jeton (`sessionStorage`).
-- **Listes** : `page` (défaut 1) et `limit` (défaut 20, max 100), réponse
-  `{ "items": [...], "total": n, "page": 1, "limit": 20 }`.
-- **Mise à jour** : `PUT` = remplacement complet (tous les champs, `null` pour vider).
-- **Rôles** : `user`, `recruiter`, `admin`. Les écritures et les routes `/users` et
-  `/applications` sont réservées à l'admin (le rôle `recruiter` n'a pas encore de droits propres).
-- **Candidature** : `POST /advertisements/{id}/applications`, anonyme ou connecté.
-  Un utilisateur connecté postule toujours avec l'email de son compte ; un visiteur
-  ne peut pas utiliser l'email d'un compte existant. Une candidature par email et par annonce.
-- **Limitation de débit** : login et candidature, par IP (`429` + `Retry-After`).
-- **Email** : notification au propriétaire de l'annonce si `SMTP_HOST` est configuré.
-
-## Modèle SQL
-
-`companies`, `users`, `advertisements`, `job_applications` — voir
-[`docs/data-models.md`](docs/data-models.md). Le schéma de référence est
-`backend/sql/schemas.sql` ; les modèles SQLAlchemy le reflètent.
-
-## Tests
-
-```bash
-cd backend && .venv/bin/pytest          # sur la base du .env, seedée avec sql/seed.sql
-cd frontend && npm run lint && npm run build
-```
-
-Les tests backend utilisent la base MySQL configurée dans `.env` (comptes du seed)
-et suppriment les enregistrements qu'ils créent.
+<p align="center">
+  Dépôt d'équipe d'origine : <a href="https://github.com/antonin-chevolleau/job-board-epitech">antonin-chevolleau/job-board-epitech</a><br>
+  <a href="https://najetzridette.github.io">Mon portfolio</a> · <a href="https://www.linkedin.com/in/najet-zridette">LinkedIn</a>
+</p>
